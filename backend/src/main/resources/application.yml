@@ -1,0 +1,30 @@
+server:
+  port: 8080
+spring:
+  application:
+    name: secure-payments-api
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/payments}
+    username: ${SPRING_DATASOURCE_USERNAME:payments}
+    password: ${SPRING_DATASOURCE_PASSWORD:payments_dev_only}
+  jpa:
+    hibernate:
+      ddl-auto: update
+    open-in-view: false
+    properties:
+      hibernate:
+        format_sql: true
+  kafka:
+    bootstrap-servers: ${SPRING_KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+app:
+  jwt:
+    secret: ${APP_JWT_SECRET:local-only-change-this-secret-to-a-long-random-value-123456789}
+    expiration-minutes: 60
